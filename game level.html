@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Levels</title>
+
+  <style>
+
+    /* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e02525; /* Background color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+#game-container {
+    text-align: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden; /* Prevent content overflow */
+}
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #af1313;
+
+}
+
+/* Grid Layout for Buttons */
+#levels-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); /* Adjust button size */
+    gap: 10px;  /* Set the gap between the buttons */
+    margin-bottom: 30px;
+    padding: 0 10px; /* Add padding for small screens */
+}
+
+/* Button Styles */
+button {
+    padding: 5px;  /* Further reduced padding to decrease button size */
+    font-size: 10px; /* Reduced font size */
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 12px;
+    border: 2px solid #4CAF50;
+    background-color: #fff;
+    color: #4CAF50;
+    width: 50px;  /* Further decreased width */
+    height: 50px; /* Further decreased height */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover Effect for Buttons */
+button:hover {
+    background-color: #4CAF50;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Focus Effect */
+button:focus {
+    outline: none;
+}
+
+/* Color for Current, Previous, and Future Levels */
+button.current-level {
+    background-color: #FF5722; /* Red for the current level */
+    color: white;
+}
+
+button.previous-level {
+    background-color: green; /* Orange for previous levels */
+    color: white;
+}
+
+button.future-level {
+    background-color: #2196F3; /* Blue for future levels */
+    color: white;
+}
+
+/* Level Content Display */
+#level-display {
+    margin-top: 30px;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    display: inline-block;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#level-display h2 {
+    font-size: 24px;
+    color: #333;
+}
+
+#level-display p {
+    font-size: 18px;
+    color: #666;
+    margin-top: 10px;
+}
+
+/* Styling for Previous and Next Buttons */
+#navigation-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+#navigation-buttons button {
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    padding: 12px 25px;
+    font-size: 18px;
+    width: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+#navigation-buttons button:hover {
+    background-color: #0056b3;
+    transform: scale(1.1);
+}
+
+#navigation-buttons button:focus {
+    outline: none;
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+    /* Adjustments for smaller screens */
+    button {
+        width: 40px;  /* Further reduced button size */
+        height: 40px;
+        font-size: 8px;
+    }
+
+    h1 {
+        font-size: 28px;
+        
+    }
+
+    #level-display h2 {
+        font-size: 20px;
+    }
+
+    #level-display p {
+        font-size: 16px;
+    }
+
+    #navigation-buttons button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    /* Make the grid responsive for small screens */
+    #levels-container {
+        grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); /* Smaller buttons */
+    }
+}
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <h1>Game Levels</h1>
+    <div id="levels-container"></div> <!-- Level buttons will be dynamically created here -->
+    
+    <div id="level-display">
+      <h2>Welcome to Level 1</h2>
+      <p>This is the content for Level 1. You can add more information or challenges here.</p>
+    </div>
+    
+    <div id="navigation-buttons">
+      <button onclick="showPreviousLevel()">Previous</button>
+      <button onclick="showNextLevel()">Next</button>
+    </div>
+  </div>
+  <script>
+    let currentLevel = 1;
+const totalLevels = 50;
+
+// Function to create level buttons
+function generateLevelButtons() {
+    const levelsContainer = document.getElementById('levels-container');
+    levelsContainer.innerHTML = ''; // Clear existing levels
+
+    for (let i = 1; i <= totalLevels; i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+
+        // Assign classes based on the current level
+        if (i < currentLevel) {
+            button.classList.add('previous-level');
+        } else if (i === currentLevel) {
+            button.classList.add('current-level');
+        } else {
+            button.classList.add('future-level');
+        }
+
+        button.addEventListener('click', function () {
+            currentLevel = i;
+            updateLevelDisplay();
+            generateLevelButtons();
+        });
+
+        levelsContainer.appendChild(button);
+    }
+}
+
+// Function to update the level display with custom messages
+function updateLevelDisplay() {
+    const levelDisplay = document.getElementById('level-display');
+    let levelMessage = '';
+
+    // Custom messages for specific levels
+    switch(currentLevel) {
+        case 1:
+            levelMessage = "Welcome to the first level! Let's start the adventure!";
+            break;
+        case 5:
+            levelMessage = "You've reached level 5! You're getting the hang of it!";
+            break;
+        case 10:
+            levelMessage = "Level 10! Halfway through the first challenge!";
+            break;
+        case 15:
+            levelMessage = "Level 15! You're progressing fast!";
+            break;
+        case 20:
+            levelMessage = "Level 20! You're doing amazing!";
+            break;
+        case 25:
+            levelMessage = "Level 25! You're halfway through!";
+            break;
+        case 30:
+            levelMessage = "Level 30! The challenges are getting tougher!";
+            break;
+        case 35:
+            levelMessage = "Level 35! You're getting close to the finish line!";
+            break;
+        case 40:
+            levelMessage = "Level 40! Stay focused, you're almost there!";
+            break;
+        case 45:
+            levelMessage = "Level 45! The final stretch is near!";
+            break;
+        case 50:
+            levelMessage = "Congratulations! You've reached the final level!";
+            break;
+        default:
+            // Default message for other levels
+            levelMessage = `This is level ${currentLevel}. You're making great progress! Keep it up!`;
+            break;
+    }
+
+    // Update the display with the current level and custom message
+    levelDisplay.innerHTML = `
+        <h2>Welcome to Level ${currentLevel}</h2>
+        <p>${levelMessage}</p>
+    `;
+}
+
+// Function to go to the previous level
+function showPreviousLevel() {
+    if (currentLevel > 1) {
+        currentLevel--;
+        updateLevelDisplay();
+        generateLevelButtons();
+    }
+}
+
+// Function to go to the next level
+function showNextLevel() {
+    if (currentLevel < totalLevels) {
+        currentLevel++;
+        updateLevelDisplay();
+        generateLevelButtons();
+    }
+}
+
+// Initial setup
+generateLevelButtons();
+updateLevelDisplay();
+
+  </script>
+</body>
+</html>
