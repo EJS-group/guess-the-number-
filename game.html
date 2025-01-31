@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Basic Arithmetic Operations</title>
+  <style>
+    body {
+    text-align: center;
+    background-color: rgb(249, 255, 167);
+  }
+
+  .btn {
+    background-color: rgb(0, 95, 0);
+    box-shadow: 2px 2px rgb(0, 0, 0);
+    color: rgb(248, 252, 250);
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    border-radius: 7px;
+    border: none;
+    font-size: 20px;
+    padding: 6px;
+  }
+
+  #bn {
+    margin-left: 10px;
+    background-color: firebrick;
+    margin-left: 50px;
+  }
+  #ch{
+    background-color: firebrick;
+  }
+
+  #btn1 {
+    margin-right: 0px;
+    margin-right: 170px;  
+  }
+  #container{
+    margin-bottom: 10px;
+  }
+
+  #inp1,#inp2 {
+    height: 50%;
+    width: 30%;
+    border: rgb(53, 53, 53) solid;
+    border-radius: 8px;
+    background-color: rgb(172, 172, 172);
+    font-size: 20px;
+    padding: 5px;
+    margin-bottom: 10px;
+
+  }
+  #resultCanvas {
+    background-color: azure;
+  }
+  .score{
+    font-size: 25px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  }
+  
+ 
+  body { font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; text-align: center; }
+        #livesContainer { margin: 20px; font-size: 2em; }
+        .star { margin: 5px; }
+
+        /* Yellow star color */
+        .fa-star {
+            color:rgb(255, 0, 0);  /* Yellow color for the stars */
+        }
+
+        #gameMessage { font-size: 1.5em; margin-top: 20px; color: rgb(0, 0, 0); }
+        #popup { display: none; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 20px; border-radius: 10px; width: 300px; margin: 0 auto; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        #popup button { padding: 10px 20px; margin-top: 10px; margin: 5px; display: flex; align-items: center; font-size: 24px; background: none; border: none; cursor: pointer; color: white; }
+        .popup-button-container {
+            display: flex;
+            justify-content: space-between;  /* This will push buttons to the left and right */
+        }
+        .popup-button-container button i {
+            margin-left: 8px; /* Space between icon and text */
+        }
+
+        /* Styling for the icon buttons */
+        #restartLevel, #nextLevel {
+            background-color: #444;
+            border-radius: 50%;
+            padding: 10px;
+        }
+
+        #restartLevel:hover, #nextLevel:hover {
+            background-color: #333;
+        }
+  </style>
+ 
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <script>
+    
+let score =0;
+var num1, num2;
+
+function calculate() {
+  num1 = Math.floor(Math.random() * 10 + 3);
+  num2 = Math.floor(Math.random() * 10);
+  // Perform arithmetic operations
+  let add = num1 + num2;
+  let sub = num1 - num2;
+  let mul = num1 * num2;
+  let div = num2 !== 0 ? num1 / num2 : "Cannot divide by zero"; // Handle division by zero
+
+  // Draw the results on the canvas
+  let canvas = document.getElementById("resultCanvas");
+  let ctx = canvas.getContext("2d");
+
+  //ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "black";
+  ctx.fillText("Addition: " + add, 10, 30);
+  ctx.fillText("Subtraction: " + sub, 10, 60);
+  ctx.fillText("Multiplication: " + mul, 10, 90);
+  ctx.fillText("Division: " + div, 10, 120);
+
+}
+
+
+
+function result() {
+  let canvas = document.getElementById("resultCanvas");
+  let ctx = canvas.getContext("2d");
+
+  //ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "black";
+  ctx.fillText("First number is: " + num1, 10, 150);
+  ctx.fillText("Second number is: " + num2, 10, 180);
+}
+
+function check() {
+  let val1 = document.getElementById("inp1").value;
+  let val2 = document.getElementById("inp2").value;
+
+  let canvas = document.getElementById("resultCanvas");
+  let ctx = canvas.getContext("2d");
+
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "black";
+
+   // Check if input is empty
+  if (val1 === "" || val2 === "") {
+    alert("Please enter both numbers.");
+    return;
+  }
+
+  if (val1 == num1) {
+   document.getElementById("h1").innerHTML ="First number is correct";
+   document.getElementById("h1").style.color = "green";
+   
+  } else {
+    document.getElementById("h1").innerHTML = "First number is wrong !";
+    document.getElementById("h1").style.color = "red";
+  }
+
+  if (val2 == num2) {
+    document.getElementById("h2").innerHTML ="second number is correct";
+    document.getElementById("h2").style.color = "green";
+  } else {
+    document.getElementById("h2").innerHTML ="second number is wrong!";
+    document.getElementById("h2").style.color = "red";
+  }
+
+
+  if(val1 == num1 && val2 == num2){
+    winGame();
+  }
+  else if(val1 != num1 || val2 != num2){
+    loseLife();
+  }
+}
+
+  </script>
+</head>
+
+<body>
+  
+
+  <h1 style="color: rgb(79, 79, 79)">Find the two numbers</h1>
+  <div id="container">
+    <button class="btn" id="btn1" onclick="calculate()">Start</button>
+    <button class="btn" onclick="restart()">restart</button><br> 
+  </div>
+
+  <div>
+    <!-- Input fields for the two numbers -->
+    <input type="number" id="inp1" placeholder="1st No" min="2" max="10" />
+    <input type="number" id="inp2" placeholder="2nd No" /><br>
+    <button class="btn" id="ch" onclick="check()">Check</button>
+    <button id="bn" class="btn" onclick="result()">show answer</button>
+  </div>
+  
+<div id="livesContainer">
+  <i class="fas fa-star star" id="star1"></i>
+  <i class="fas fa-star star" id="star2"></i>
+  <i class="fas fa-star star" id="star3"></i>
+</div>
+
+  <canvas id="resultCanvas" style="border: 1px solid grey" width="250" height="250">
+  </canvas><br />
+  <div style="display: inline; padding-left: 0px; font-size: x-large;">
+    <p id="h1"></p>
+    <p id="h2"></p>
+    <p id="levelInfo"></p>
+  </div>
+
+
+<p id="gameMessage"></p>
+
+<!-- Popup with two buttons (Winning or Game Over) -->
+<div id="popup">
+    <p id="popupMessage"></p>
+    <p>Your remaining lives:</p>
+    <div id="popupLives"></div>
+    <div class="popup-button-container">
+        <button id="restartLevel">
+            <i class="fas fa-sync-alt"></i>  <!-- Refresh icon for restart -->
+        </button>
+        <button id="nextLevel" style="display: none;">
+            <i class="fas fa-arrow-right"></i>  <!-- Right arrow icon for next level -->
+        </button>
+    </div>
+</div>
+
+<script>
+   
+   let lives = 3;  // Starting with 3 stars
+  let gameRunning = true;  // Track if the game is still running
+  let currentLevel = 1;  // Track the current level
+
+  // Function to update the lives stars
+  function updateLivesDisplay() {
+      for (let i = 1; i <= 3; i++) {
+      const starIcon = document.getElementById(`star${i}`);
+          if (i > lives) {
+              starIcon.classList.remove("fas", "fa-star");
+              starIcon.classList.add("far", "fa-star");  // Change to empty star
+          } else {
+              starIcon.classList.remove("far", "fa-star");
+              starIcon.classList.add("fas", "fa-star");  // Change to full star
+          }
+      }
+  }
+
+  // Function to update level display
+  function updateLevelDisplay() {
+      document.getElementById('levelInfo').textContent = `Level: ${currentLevel}`;
+  }
+
+  // Function to handle the loss of a life
+  function loseLife() {
+      if (gameRunning && lives > 0) {
+          lives--;  // Decrease lives by 1
+          updateLivesDisplay();  // Update the icons
+
+          // Check if the game should end
+          if (lives <= 0) {
+              gameRunning = false;
+              //document.getElementById('gameMessage').textContent = 'Game Over! You ran out of lives.';
+              
+              // Show the Game Over popup with Restart button only
+              const popupMessage = document.getElementById('popupMessage');
+              popupMessage.textContent = 'Game Over!';
+              
+              const popupLivesContainer = document.getElementById('popupLives');
+              popupLivesContainer.innerHTML = '';  // Clear any previous stars from the popup
+              // Display 0 stars in the popup (game over)
+              for (let i = 0; i < lives; i++) {
+                  const star = document.createElement('i');
+                  star.classList.add('fas', 'fa-star');  // Full star (if lives were more than 0)
+                  star.style.margin = '5px';
+                  popupLivesContainer.appendChild(star);
+              }
+              
+              // Hide Next Level button and show Restart button only
+              document.getElementById('nextLevel').style.display = 'none';
+              
+              // Display the popup
+              document.getElementById('popup').style.display = 'block';
+          }
+      }
+  }
+
+  // Function to handle the winning state
+  function winGame() {
+      if (gameRunning) {
+          gameRunning = false;  // Stop the game
+          //document.getElementById('gameMessage').textContent = 'You won the game!';
+
+          // Show the popup with remaining stars (lives)
+          const popupMessage = document.getElementById('popupMessage');
+          popupMessage.textContent = 'Congratulations!';
+          
+          const popupLivesContainer = document.getElementById('popupLives');
+          popupLivesContainer.innerHTML = '';  // Clear any previous stars from the popup
+          for (let i = 1; i <= lives; i++) {
+              const star = document.createElement('i');
+              star.classList.add('fas', 'fa-star');  // Full star
+              star.style.margin = '5px';
+              popupLivesContainer.appendChild(star);
+          }
+
+          // Show both Restart and Next Level buttons
+          document.getElementById('nextLevel').style.display = 'inline-block';
+              
+          // Display the popup
+          document.getElementById('popup').style.display = 'block';
+      }
+  }
+
+  function nextLevel() {
+    location.reload();
+  }
+
+  // Function to handle "Restart Level" button click
+  function restartLevel() {
+      window.location.reload();
+      }
+
+  // Function to close the popup
+  function closePopup() {
+      document.getElementById('popup').style.display = 'none';  // Hide the popup
+  }
+
+  // Function to reset the game
+  function resetGame() {
+      lives = 3;  // Reset lives back to 3
+      gameRunning = true;  // Set gameRunning to true
+      updateLivesDisplay();  // Update the icons
+      //document.getElementById('gameMessage').textContent = '';  // Clear the message
+  }
+
+  // Event listeners for the buttons
+
+  document.getElementById('restartLevel').addEventListener('click', restartLevel);
+  document.getElementById('nextLevel').addEventListener('click', nextLevel);
+  document.getElementById('popup').addEventListener('click', closePopup);  // Close the popup when clicked outside (optional)
+
+  // Initialize the display with full stars and the first level
+  updateLivesDisplay();
+  updateLevelDisplay();
+</script>
+
+</body>
+
+</html>
